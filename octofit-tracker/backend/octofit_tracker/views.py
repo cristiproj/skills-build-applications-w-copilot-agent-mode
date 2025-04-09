@@ -3,15 +3,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import UserSerializer, TeamSerializer, ActivitySerializer, LeaderboardSerializer, WorkoutSerializer
 from .models import User, Team, Activity, Leaderboard, Workout
+from django.conf import settings
 
 @api_view(['GET'])
 def api_root(request, format=None):
+    base_url = "https://obscure-acorn-vrx9qqwrv5g3w67q-8000.app.github.dev" if settings.DEBUG else request.build_absolute_uri('/')
     return Response({
-        'users': request.build_absolute_uri('api/users/'),
-        'teams': request.build_absolute_uri('api/teams/'),
-        'activities': request.build_absolute_uri('api/activities/'),
-        'leaderboard': request.build_absolute_uri('api/leaderboard/'),
-        'workouts': request.build_absolute_uri('api/workouts/'),
+        'users': f"{base_url}api/users/",
+        'teams': f"{base_url}api/teams/",
+        'activities': f"{base_url}api/activities/",
+        'leaderboard': f"{base_url}api/leaderboard/",
+        'workouts': f"{base_url}api/workouts/",
     })
 
 class UserViewSet(viewsets.ModelViewSet):
